@@ -233,8 +233,10 @@ func New(database *sql.DB, logger *logging.Logger, options Options) (*Applicatio
 	mainMux.HandleFunc("POST /integrations/pawpal/webhook", pawPalHandler.Webhook)
 	mainMux.Handle("/", dynamicHandler)
 
+	// Global Chain
 	handler := applyMiddleware(
 		mainMux,
+		setNosniff,
 		cspNonce,
 		recoverPanics(logger, renderer),
 	)
